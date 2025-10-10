@@ -16,6 +16,8 @@ git config --global user.name 25349023
 git config --global user.email 25349023.qq@gmail.com
 git config --global alias.st status
 git config --global alias.l "log --oneline"
+git config --global credential.helper store
+
 cp ~/.tmux.conf ~/.tmux.conf.old
 cp .tmux.conf ~
 
