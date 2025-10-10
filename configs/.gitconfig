@@ -1,0 +1,11 @@
+[alias]
+	st = status
+	l = log --oneline
+    co = checkout
+    la = log --oneline --graph --all
+    sw = switch
+[user]
+	email = 25349023.qq@gmail.com
+	name = 25349023
+[credential]
+	helper = store

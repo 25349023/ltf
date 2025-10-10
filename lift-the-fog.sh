@@ -1,25 +1,25 @@
 #!/usr/bin/env bash
 
+function backup() {
+
+}
+
 set -eEuo pipefail
 
 sudo -v
 
 cp ~/.bashrc ~/.bashrc.old
-cat .bashrc.patch >> ~/.bashrc 
+cat configs/.bashrc.patch >> ~/.bashrc 
 
 sudo apt update
 sudo apt install -y etckeeper
 sudo etckeeper init
 
 sudo apt install -y git vim tmux
-git config --global user.name 25349023
-git config --global user.email 25349023.qq@gmail.com
-git config --global alias.st status
-git config --global alias.l "log --oneline"
-git config --global credential.helper store
 
-cp ~/.tmux.conf ~/.tmux.conf.old
-cp .tmux.conf ~
+cp configs/.vimrc ~
+cp configs/.gitconfig ~
+cp configs/.tmux.conf ~
 
 
 sudo apt install -y firewalld
