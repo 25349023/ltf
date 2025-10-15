@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-function backup() {
+# function backup() {
 
-}
+# }
 
 set -eEuo pipefail
 
