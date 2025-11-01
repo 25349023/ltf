@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# function backup() {
-
-# }
-
 set -eEuo pipefail
 
 sudo -v
