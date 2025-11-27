@@ -9,3 +9,5 @@
     name = 25349023
 [credential]
     helper = store
+[credential "https://github.com"]
+    useHttpPath = true
