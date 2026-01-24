@@ -17,6 +17,7 @@ cp configs/.tmux.conf ~
 
 cp ~/.bashrc ~/.bashrc.old
 cat configs/.bashrc.patch >> ~/.bashrc 
+cp -r configs/.bashrc.d ~
 
 sudo apt update
 sudo apt install -y etckeeper

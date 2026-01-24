@@ -4,3 +4,11 @@ alias l='ls -CF'
 
 # Ref: https://stackoverflow.com/questions/791765/unable-to-forward-search-bash-history-similarly-as-with-ctrl-r
 stty -ixon
+
+# Load user bashrc.d scripts (if any)
+if [[ -d "$HOME/.bashrc.d" ]] ; then
+  for file in "$HOME"/.bashrc.d/*.sh ; do
+    [[ -f "$file" ]] && source "$file"
+  done
+fi
+
