@@ -2,6 +2,8 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+export PATH=${HOME}/.local/bin:$PATH
+
 # Ref: https://stackoverflow.com/questions/791765/unable-to-forward-search-bash-history-similarly-as-with-ctrl-r
 stty -ixon
 
@@ -11,4 +13,7 @@ if [[ -d "$HOME/.bashrc.d" ]] ; then
     [[ -f "$file" ]] && source "$file"
   done
 fi
+
+export MANPAGER='sh -c "col -bx | bat -plman"'
+export MANROFFOPT='-c'
 

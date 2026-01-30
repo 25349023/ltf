@@ -4,6 +4,7 @@ set -eEuo pipefail
 
 sudo -v
 
+sudo apt update
 sudo apt install -y git 
 
 cd /tmp
@@ -19,7 +20,15 @@ cp ~/.bashrc ~/.bashrc.old
 cat configs/.bashrc.patch >> ~/.bashrc 
 cp -r configs/.bashrc.d ~
 
-sudo apt update
+sudo apt install -y batcat ripgrep
+cd /usr/bin
+[[ -f ./bat ]] || sudo ln -s batcat bat
+cd /tmp/ltf
+
+# install scripts
+mkdir -p ~/.local/bin
+cp bin/* ~/.local/bin
+
 sudo apt install -y etckeeper
 sudo etckeeper init
 

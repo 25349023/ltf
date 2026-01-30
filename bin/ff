@@ -1,0 +1,60 @@
+#!/usr/bin/bash
+# ==============================================================================
+# Tool    : ff (Fast Find)
+# Summary : Asynchronous project-wide search using ripgrep and less.
+# Features:
+#   1. Async Search   : View partial results immediately without waiting.
+#   2. Session-based  : Logs are isolated by Terminal PID ($PPID).
+#   3. Smart Follow   : Automatically enters +F mode for long-running searches.
+#   4. Quick Filters  : Supports presets for file types (c, py, js, web, etc.).
+#
+# Usage:
+#   ff <pattern>         # Search all files
+#   ff <pattern> <type>  # Search specific type (e.g., ff main c)
+#   ff                   # Show last search results for current session
+# ==============================================================================
+
+pattern=$1
+file_type=$2
+
+log_file="/tmp/${USER}-${PPID}-last-ff"
+rg_type_flag=""
+grep_pid=""
+follow=""
+
+cleanup() {
+    if [[ -n "$grep_pid" ]]; then
+        kill "$grep_pid" 2>/dev/null
+        wait "$grep_pid" 2>/dev/null
+    fi
+}
+trap cleanup EXIT
+
+if [[ -n "$file_type" ]]; then
+    case $file_type in
+        c | cpp )      rg_type_flag="-t c -t cpp" ;;
+        py | python )  rg_type_flag="-t py" ;;
+        sh | shell )   rg_type_flag="-t sh" ;;
+        js | ts )      rg_type_flag="-t js -t ts" ;;
+        web)           rg_type_flag="-t html -t css -t js -t ts" ;;
+        * )            rg_type_flag="-t ${file_type}" ;;
+    esac
+fi
+
+if [[ -n $pattern ]] ; then
+    touch "$log_file"
+    rg -Hni --hidden --glob '!.git/' --line-buffered --color=always $rg_type_flag -e "$pattern" . > "$log_file" &
+    grep_pid=$!
+
+    sleep 0.2
+    if kill -0 $grep_pid &> /dev/null ; then
+        follow="+F"
+    fi
+fi
+
+if [[ -f "$log_file" ]] ; then
+    prompt_str="Searching... Pattern\: $pattern | Type\: ${type_arg:-all} | Line %lb/%L (%Pb\%) | %f"
+    less $follow -RS -P "$prompt_str" "$log_file"
+else
+    echo 'No previous search found.'
+fi
