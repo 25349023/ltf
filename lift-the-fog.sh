@@ -25,6 +25,9 @@ cd /usr/bin
 [[ -f ./bat ]] || sudo ln -s batcat bat
 cd /tmp/ltf
 
+# install packages
+./packages/install-docker.sh
+
 # install scripts
 mkdir -p ~/.local/bin
 cp bin/* ~/.local/bin
