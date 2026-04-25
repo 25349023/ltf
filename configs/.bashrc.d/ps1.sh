@@ -10,10 +10,12 @@ __setup_ps1() {
     PS1="${GREEN}\u@\h${RESET}:${BLUE}\w${PURPLE}"'$(__git_ps1 " (%s)")'"${RESET} \$ "
 }
 
-__setup_ps1
 
 # git PS1 setup
 # ============================== 
 . ~/.bashrc.d/.git-prompt.sh
 export GIT_PS1_SHOWDIRTYSTATE=1
+export GIT_PS1_SHOWUPSTREAM="auto"
+
+__setup_ps1
 
