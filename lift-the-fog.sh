@@ -16,8 +16,11 @@ sudo apt install -y vim tmux
 cp configs/.vimrc ~
 cp configs/.tmux.conf ~
 
-cp ~/.bashrc ~/.bashrc.old
-cat configs/.bashrc.patch >> ~/.bashrc 
+if [[ ! -f ~/.bashrc.old ]] ; then
+    cp ~/.bashrc ~/.bashrc.old
+    printf "\nsource ~/.bashrc.ltf\n" >> ~/.bashrc
+fi
+cp configs/.bashrc.patch  ~/.bashrc.ltf
 cp -r configs/.bashrc.d ~
 
 sudo apt install -y batcat ripgrep
