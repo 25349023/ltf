@@ -29,7 +29,16 @@ cd() {
         return 0
     fi
 
-    builtin pushd ${DIR:+"$DIR"} > /dev/null && dirs
+    builtin pushd ${DIR:+"$DIR"} > /dev/null || return 1
+    
+    local DIRSTACKSIZE=20  # max stack size
+    
+    while (( ${#DIRSTACK[@]} > DIRSTACKSIZE )); do
+        # `popd -0` remove item at the end, and is not affected by deleted directories
+        builtin popd -0 &> /dev/null
+    done
+    
+    dirs | head -n 6
 }
 
 pd() {
@@ -43,11 +52,13 @@ pd() {
         return 1
     fi
 
-    for (( i=0; i < N; i++ )) ; do
-        builtin popd &> /dev/null || break
+    for (( i=0; i < N-1; i++ )) ; do
+        # prevents cd into already deleted dirs
+        builtin popd +1 &> /dev/null || break
     done
 
-    dirs
+    builtin popd > /dev/null
+    dirs | head -n 6
 }
 
 alias clcd='dirs -c; dirs'
