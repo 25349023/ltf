@@ -23,7 +23,7 @@ fi
 cp configs/.bashrc.patch  ~/.bashrc.ltf
 cp -r configs/.bashrc.d ~
 
-sudo apt install -y batcat ripgrep
+sudo apt install -y bat ripgrep
 cd /usr/bin
 [[ -f ./bat ]] || sudo ln -s batcat bat
 cd /tmp/ltf
