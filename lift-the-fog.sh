@@ -36,9 +36,10 @@ cp configs/.gitconfig configs/.vimrc configs/.tmux.conf ~
 #  update bashrc
 # ======================================== 
 
+[[ -s ~/.bashrc.ltf-orig ]] || cp ~/.bashrc ~/.bashrc.ltf-orig
+
 SOURCE_CMD='[[ -f ~/.bashrc.ltf ]] && source ~/.bashrc.ltf'
 if ! grep -Fxq "${SOURCE_CMD}" ~/.bashrc ; then
-    cp ~/.bashrc ~/.bashrc.orig
     printf "\n%s\n" "${SOURCE_CMD}" >> ~/.bashrc
 fi
 
