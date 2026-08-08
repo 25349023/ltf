@@ -50,16 +50,27 @@ cp -r configs/.bashrc.d ~
 # ======================================== 
 #  install optional packages
 # ======================================== 
-if [[ -t 0 || -c /dev/tty ]] ; then
+
+source opt-pkgs.conf
+
+if [[ -t 0 && -t 1 ]] ; then
     CHOICES=$(whiptail --title "Lift The Fog - Packages Selection" \
         --checklist "Use [SPACE] to select/deselect, [ENTER] to confirm:" 15 65 3 \
-        "etckeeper" "Track /etc with Git" ON \
-        "docker"    "Docker Container Engine" ON \
-        "firewalld" "Firewall Management" ON \
+        "${PACKAGE_LIST[@]}" \
         3>&1 1>&2 2>&3) || true
 else
     echo "==> Non-interactive mode detected. Installing all default packages."
-    CHOICES='"etckeeper" "docker" "firewalld"'
+    default_pkgs=()
+    for (( i=0; i < ${#PACKAGE_LIST[@]}; i+=3 )) ; do
+        pkg_name=${PACKAGE_LIST[i]}
+        pkg_en=${PACKAGE_LIST[i+2]}
+
+        if [[ ${pkg_en} == "ON" ]] ; then
+            default_pkgs+=( "\"${pkg_name}\"" )
+        fi
+
+    done
+    CHOICES="${default_pkgs[*]}"
 fi
 
 if [[ -z "${CHOICES}" ]]; then
