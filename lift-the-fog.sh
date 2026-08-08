@@ -50,16 +50,38 @@ cp -r configs/.bashrc.d ~
 # ======================================== 
 #  install optional packages
 # ======================================== 
-./packages/install-docker.sh
+if [[ -t 0 || -c /dev/tty ]] ; then
+    CHOICES=$(whiptail --title "Lift The Fog - Packages Selection" \
+        --checklist "Use [SPACE] to select/deselect, [ENTER] to confirm:" 15 65 3 \
+        "etckeeper" "Track /etc with Git" ON \
+        "docker"    "Docker Container Engine" ON \
+        "firewalld" "Firewall Management" ON \
+        3>&1 1>&2 2>&3) || true
+else
+    echo "==> Non-interactive mode detected. Installing all default packages."
+    CHOICES='"etckeeper" "docker" "firewalld"'
+fi
 
-sudo apt install -y etckeeper
-sudo etckeeper init
+if [[ -z "${CHOICES}" ]]; then
+    echo "==> No packages selected or action cancelled. Exiting."
+    exit 0
+fi
 
-sudo apt install -y firewalld
-sudo firewall-cmd --add-service=mdns --permanent
-sudo firewall-cmd --add-port=5900/udp --permanent  # for vnc server
-sudo firewall-cmd --add-port=5900/tcp --permanent  # for vnc server
-sudo firewall-cmd --reload
+echo "Selected packages: ${CHOICES}"
+
+PACKAGE_ORDER=("etckeeper" "docker" "firewalld")
+
+for pkg in "${PACKAGE_ORDER[@]}"; do
+    if [[ "${CHOICES}" =~ \"${pkg}\" ]]; then
+        script_path="./packages/install-${pkg}.sh"
+        if [[ -f "${script_path}" ]]; then
+            echo "==> [Installing] ${pkg}..."
+            bash "${script_path}"
+        else
+            echo "==> [Warning] Script not found: ${script_path}"
+        fi
+    fi
+done
 
 
 # ======================================== 
