@@ -32,10 +32,13 @@ cp configs/.gitconfig configs/.vimrc configs/.tmux.conf ~
 # ======================================== 
 #  update bashrc
 # ======================================== 
-if [[ ! -f ~/.bashrc.old ]] ; then
-    cp ~/.bashrc ~/.bashrc.old
-    printf "\nsource ~/.bashrc.ltf\n" >> ~/.bashrc
+
+SOURCE_CMD='[[ -f ~/.bashrc.ltf ]] && source ~/.bashrc.ltf'
+if ! grep -Fxq "${SOURCE_CMD}" ~/.bashrc ; then
+    cp ~/.bashrc ~/.bashrc.orig
+    printf "\n%s\n" "${SOURCE_CMD}" >> ~/.bashrc
 fi
+
 cp configs/.bashrc.patch  ~/.bashrc.ltf
 cp -r configs/.bashrc.d ~
 
