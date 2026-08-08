@@ -18,9 +18,7 @@ cd ltf
 
 sudo apt install -y vim tmux
 sudo apt install -y bat ripgrep
-cd /usr/bin
-[[ -f ./bat ]] || sudo ln -s batcat bat
-cd /tmp/ltf
+[[ -e /usr/bin/bat ]] || sudo ln -s /usr/bin/batcat /usr/bin/bat
 
 
 # ======================================== 
