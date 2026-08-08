@@ -5,7 +5,7 @@ set hlsearch
 set tabstop=4
 set expandtab
 set autoindent
-set smartindent
+filetype plugin indent on
 set shiftwidth=4
 
 set backspace=indent,eol,start
