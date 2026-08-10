@@ -3,13 +3,8 @@
 dirs() {
     local N=$(builtin dirs -p | wc -l)
     if (( $# == 0 )) ; then
-        if (( N > 5 )) ; then
-            printf "\033[1;34mDIRSTACK:\033[0m\n"
-            builtin dirs -v
-        else
-            printf "\033[1;34mDIRSTACK:\033[0m "
-            builtin dirs
-        fi
+        printf "\033[1;34mDIRSTACK:\033[0m "
+        builtin dirs
     else
         builtin dirs "$@"
     fi
